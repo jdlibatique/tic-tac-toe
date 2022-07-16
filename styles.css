@@ -1,0 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+body, button {
+  color: white;
+  font-family: "Press Start 2P", cursive;
+  background-color: #232337;
+}
+
+h1 {
+  text-shadow: 0 0 3px rgb(39, 39, 39);
+}
+
+button {
+  padding: 1vh;
+  height: 60px;
+  width: 200px;
+  text-align: center;
+  background-color: #32324f;
+  color: white;
+  border: none;
+  border-bottom: 5px outset #65ffd6;
+  border-radius: 15px;
+  transition: 150ms cubic-bezier(1, 0.75, 0.75, 1);
+}
+button:hover {
+  color: #b0ff65;
+  border: 3px solid #b0ff65;
+  box-shadow: 0 0 5px #b0ff65;
+  border-bottom: 5px outset #b0ff65;
+}
+
+#main-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 95vh;
+  width: 100%;
+}
+
+#game-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgb(24, 24, 46);
+  padding: 3vw;
+  border-radius: 30px;
+}
+
+.grid-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+.grid-columns button {
+  height: 150px;
+  width: 150px;
+  font-size: 30px;
+}
+.grid-columns button:hover {
+  border: 3px solid #b0ff65;
+  border-bottom: 5px outset #b0ff65;
+  box-shadow: 0 0 10px #b0ff65;
+}
+
+.game-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 10px 0;
+  gap: 15px;
+}
+
+/*# sourceMappingURL=styles.css.map */
