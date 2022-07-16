@@ -21,6 +21,7 @@ const setBoard = () => {
     turn = 'X';
     while (history.length) history.pop(); //Remove all elements from history
 
+    document.querySelector("#turn-header").innerHTML = "IT'S THE TURN FOR PLAYER X"
     document.querySelector("#btn-previous").style.opacity = "0";
     document.querySelector("#btn-previous").disabled = true;
     document.querySelector("#btn-next").style.opacity = "0";
@@ -75,7 +76,10 @@ const checkForWin = (turn) => {
         document.querySelector("#btn-previous").disabled = false;
         document.querySelector("#btn-next").style.opacity = "1";
         document.querySelector("#btn-next").disabled = false;
-        alert(`${turn} has won!`)
+        if (turn === 'X'){
+            document.querySelector("#turn-header").innerHTML = `O HAS WON!`;
+        }else
+            document.querySelector("#turn-header").innerHTML = `X HAS WON!`;
         for (let i = 0; i < 9; i++) {
             document.querySelector(`#btn-${i}`).disabled = true;
         }
@@ -85,6 +89,7 @@ const checkForWin = (turn) => {
 function setSymbol() {
     let x = parseInt(this.dataset.x);
     let y = parseInt(this.dataset.y);
+    document.querySelector("#turn-header").innerHTML = `IT'S THE TURN FOR PLAYER ${turn}`
     if (gameArray[x][y] !== ``) {
         alert(`There's already something there!`)
         return;
@@ -93,16 +98,16 @@ function setSymbol() {
         this.innerHTML = `X`;
         gameArray[x][y] = `X`;
         history.push({x: x, y: y, symbol: turn});
-        checkForWin(turn);
         turnCount++;
         turn = `O`;
+        checkForWin(turn);
     } else {
         this.innerHTML = `O`;
         gameArray[x][y] = `O`;
         history.push({x: x, y: y, symbol: turn});
-        checkForWin(turn);
         turnCount++;
         turn = `X`;
+        checkForWin(turn)
     }
     console.log(`Turn = ${turnCount}`);
     console.log(gameDone);
@@ -148,7 +153,7 @@ const goBackHistory = () => {
     let y = history[turnCount - 1].y;
     let symbol = history[turnCount - 1].symbol;
     gameArray[x].splice(y, 1)
-    document.querySelector(`#btn-${((x * 3) + y)}`).innerHTML = ``;
+    document.querySelector(`#btn-${((x * 3) + y)}`).innerHTML = ` `;
     turnCount--;
 }
 
