@@ -83,13 +83,15 @@ const checkForWin = (turn) => {
         for (let i = 0; i < 9; i++) {
             document.querySelector(`#btn-${i}`).disabled = true;
         }
-    }
+    }else if (turnCount === 9) {
+        document.querySelector("#turn-header").innerHTML = `NO MORE VALID MOVES`;
+    }else
+        document.querySelector("#turn-header").innerHTML = `IT'S THE TURN FOR PLAYER ${turn}`
 }
 
 function setSymbol() {
     let x = parseInt(this.dataset.x);
     let y = parseInt(this.dataset.y);
-    document.querySelector("#turn-header").innerHTML = `IT'S THE TURN FOR PLAYER ${turn}`
     if (gameArray[x][y] !== ``) {
         alert(`There's already something there!`)
         return;
