@@ -1,7 +1,9 @@
-let turn = `x`;
+let turn;
 let gameDone = false;
 
 let gameArray;
+let history;
+let turnCount;
 
 const setGameArray = () => {
     gameArray = [
@@ -9,12 +11,15 @@ const setGameArray = () => {
         ['', '', ''],
         ['', '', '']
     ];
+    history = [];
 }
 
 const setBoard = () => {
     setGameArray();
+    turnCount = 0;
     gameDone = false;
-    turn = 'x';
+    turn = 'X';
+    while (history.length) history.pop(); //Remove all elements from history
 
     document.querySelector("#btn-previous").style.opacity = "0";
     document.querySelector("#btn-previous").disabled = true;
@@ -84,56 +89,81 @@ function setSymbol() {
         alert(`There's already something there!`)
         return;
     }
-    if (turn === `x`) {
+    if (turn === `X`) {
         this.innerHTML = `X`;
-        gameArray[x][y] = `x`;
+        gameArray[x][y] = `X`;
+        history.push({x: x, y: y, symbol: turn});
         checkForWin(turn);
-        turn = `o`;
+        turnCount++;
+        turn = `O`;
     } else {
         this.innerHTML = `O`;
-        gameArray[x][y] = `o`;
+        gameArray[x][y] = `O`;
+        history.push({x: x, y: y, symbol: turn});
         checkForWin(turn);
-        turn = `x`;
+        turnCount++;
+        turn = `X`;
     }
-
+    console.log(`Turn = ${turnCount}`);
     console.log(gameDone);
+    console.log(history);
+    console.log(history[turnCount - 1].x);
     console.log(gameArray);
 }
 
 const colorize = (start, direction) => {
 
-    const setButtonStyle = (i) => {
-        document.querySelector(`#btn-${i}`).style.color = `#b0ff65`;
-        document.querySelector(`#btn-${i}`).style.transform = `scale(1.05)`;
-        document.querySelector(`#btn-${i}`).style.border = `3px solid #b0ff65`;
-        document.querySelector(`#btn-${i}`).style.borderBottom = `5px outset #b0ff65`;
-        document.querySelector(`#btn-${i}`).style.boxShadow = `0 0 10px #b0ff65`;
+    const setButtonStyle = (buttonNumber) => {
+        document.querySelector(`#btn-${buttonNumber}`).style.color = `#b0ff65`;
+        document.querySelector(`#btn-${buttonNumber}`).style.transform = `scale(1.05)`;
+        document.querySelector(`#btn-${buttonNumber}`).style.border = `3px solid #b0ff65`;
+        document.querySelector(`#btn-${buttonNumber}`).style.borderBottom = `5px outset #b0ff65`;
+        document.querySelector(`#btn-${buttonNumber}`).style.boxShadow = `0 0 10px #b0ff65`;
     }
     if (direction === "horizontal") {
         for (let i = (start * 3); i < (start * 3) + 3; i++) {
             setButtonStyle(i)
         }
-    }else if (direction === "vertical") {
+    } else if (direction === "vertical") {
         for (let i = start; i < 9; i += 3) {
             setButtonStyle(i)
         }
-    }else if (direction === "diagonalLeft") {
+    } else if (direction === "diagonalLeft") {
         for (let i = start; i < 9; i += 4) {
             setButtonStyle(i)
         }
-    }else if (direction === "diagonalRight") {
-    for (let i = start; i < 8; i += 2) {
-        setButtonStyle(i)
+    } else if (direction === "diagonalRight") {
+        for (let i = start; i < 8; i += 2) {
+            setButtonStyle(i)
+        }
     }
-}
 
 }
 
+const goBackHistory = () => {
+    if (turnCount === 0)
+        return;
+    console.log(history[turnCount - 1])
+    let x = history[turnCount - 1].x;
+    let y = history[turnCount - 1].y;
+    let symbol = history[turnCount - 1].symbol;
+    gameArray[x].splice(y, 1)
+    document.querySelector(`#btn-${((x * 3) + y)}`).innerHTML = ``;
+    turnCount--;
+}
 
-
-const colorizeVertical = (start) => {
-    console.log(start);
-
+const goForwardHistory = () => {
+    if (turnCount > history.length - 1)
+        return;
+    console.log(history[turnCount - 1])
+    let x = history[turnCount].x;
+    let y = history[turnCount].y;
+    let symbol = history[turnCount].symbol;
+    gameArray[x].unshift(y)
+    document.querySelector(`#btn-${((x * 3) + y)}`).innerHTML = `${symbol}`;
+    turnCount++;
 }
 
 document.querySelector("#btn-restart").addEventListener("click", setBoard);
+document.querySelector("#btn-previous").addEventListener("click", goBackHistory);
+document.querySelector("#btn-next").addEventListener("click", goForwardHistory);
