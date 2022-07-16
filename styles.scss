@@ -59,10 +59,13 @@ button {
 		height: 150px;
 		width: 150px;
 		font-size: 30px;
+		z-index: 0;
 		&:hover {
 			border: 3px solid #b0ff65;
 			border-bottom: 5px outset #b0ff65;
 			box-shadow: 0 0 10px #b0ff65;
+			z-index: 1;
+			transform: scale(1.1);
 		}
 	}
 }

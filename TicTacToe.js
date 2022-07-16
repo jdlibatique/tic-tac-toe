@@ -45,26 +45,24 @@ const setBoard = () => {
 }
 
 const checkForWin = (turn) => {
-    let colorizeStart;
-    let colorizeEnd;
+    let start;
     for (let i = 0; i < 3; i++) {
         if (gameArray[i][0] !== '' && gameArray[i][0] === gameArray[i][1] && gameArray[i][1] === gameArray[i][2]) {
             gameDone = true;
-            colorizeStart = i;
-            colorizeEnd = 2;
-            console.log(colorizeStart, colorizeEnd);
-            colorizeHorizontal(colorizeStart);
+            start = i;
+            colorize(start, "horizontal");
         } else if (gameArray[0][i] !== '' && gameArray[0][i] === gameArray[1][i] && gameArray[1][i] === gameArray[2][i]) {
             gameDone = true;
-            colorizeStart = 0;
-            colorizeEnd = i;
-            console.log(colorizeStart, colorizeEnd);
+            start = i;
+            colorize(start, "vertical");
         }
     }
     if (gameArray[0][0] !== '' && gameArray[0][0] === gameArray[1][1] && gameArray[1][1] === gameArray[2][2]) {
         gameDone = true;
+        colorize(0, "diagonalLeft");
     } else if (gameArray[0][2] !== '' && gameArray[0][2] === gameArray[1][1] && gameArray[1][1] === gameArray[2][0]) {
         gameDone = true;
+        colorize(2, "diagonalRight");
     }
 
     if (gameDone) {
@@ -73,6 +71,9 @@ const checkForWin = (turn) => {
         document.querySelector("#btn-next").style.opacity = "1";
         document.querySelector("#btn-next").disabled = false;
         alert(`${turn} has won!`)
+        for (let i = 0; i < 9; i++) {
+            document.querySelector(`#btn-${i}`).disabled = true;
+        }
     }
 }
 
@@ -99,16 +100,40 @@ function setSymbol() {
     console.log(gameArray);
 }
 
-const colorizeHorizontal = (start) => {
-    for (let i = (start * 3); i < (start * 3) + 3; i++) {
+const colorize = (start, direction) => {
+
+    const setButtonStyle = (i) => {
         document.querySelector(`#btn-${i}`).style.color = `#b0ff65`;
+        document.querySelector(`#btn-${i}`).style.transform = `scale(1.05)`;
+        document.querySelector(`#btn-${i}`).style.border = `3px solid #b0ff65`;
+        document.querySelector(`#btn-${i}`).style.borderBottom = `5px outset #b0ff65`;
+        document.querySelector(`#btn-${i}`).style.boxShadow = `0 0 10px #b0ff65`;
+    }
+    if (direction === "horizontal") {
+        for (let i = (start * 3); i < (start * 3) + 3; i++) {
+            setButtonStyle(i)
+        }
+    }else if (direction === "vertical") {
+        for (let i = start; i < 9; i += 3) {
+            setButtonStyle(i)
+        }
+    }else if (direction === "diagonalLeft") {
+        for (let i = start; i < 9; i += 4) {
+            setButtonStyle(i)
+        }
+    }else if (direction === "diagonalRight") {
+    for (let i = start; i < 8; i += 2) {
+        setButtonStyle(i)
     }
 }
 
+}
+
+
+
 const colorizeVertical = (start) => {
-    for (let i = (start * 3); i < (start * 3) + 3; i++) {
-        document.querySelector(`#btn-${i}`).style.color = `#b0ff65`;
-    }
+    console.log(start);
+
 }
 
 document.querySelector("#btn-restart").addEventListener("click", setBoard);
