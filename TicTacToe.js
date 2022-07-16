@@ -1,132 +1,28 @@
-// import React, {useState} from "react";
-// import './TicTacToe.css'
-//
-// const TicTacToe = () => {
-//
-//     const [turn, setTurn] = useState(`x`);
-//     const [cells, setCells] = useState(Array(9).fill(``));
-//     const [winner, setWinner] = useState();
-//
-//     const checkForWin = (squares) => {
-//         const combinations = {
-//             vertical: [
-//                 [0, 1, 2],
-//                 [3, 4, 5],
-//                 [6, 7, 8],
-//             ],
-//             horizontal: [
-//                 [0, 3, 6],
-//                 [1, 4, 7],
-//                 [2, 5, 8],
-//             ],
-//             diagonal: [
-//                 [0, 4, 8],
-//                 [2, 4, 6],
-//             ]
-//         }
-//
-//         for (const combination in combinations) {
-//             combinations[combination].forEach((pattern) => {
-//                 if (squares[pattern[0]] === '' ||
-//                     squares[pattern[1]] === '' ||
-//                     squares[pattern[2]] === ''
-//                 ) {
-//
-//                 }else if (squares[pattern[0]] === squares[pattern[1]] &&
-//                     squares[pattern[1]] === squares[pattern[2]]) {
-//                     setWinner(squares[pattern[0]]);
-//                 }
-//             });
-//         }
-//     }
-//
-//     const handleClick = (num) => {
-//         if (cells[num] !== ``){
-//             alert(`There's already something there!`)
-//             return;
-//         }
-//         let squares = [...cells];
-//         // alert(`test ${num}`);
-//         if (turn === `x`) {
-//             setTurn(`o`)
-//             squares[num] = `x`;
-//         }else {
-//             setTurn(`x`);
-//             squares[num] = `o`;
-//         }
-//         setCells(squares);
-//         checkForWin();
-//         // console.log(squares);
-//     }
-//
-//     const Cell = ({num}) => {
-//         return <td onClick={() => handleClick(num)}>{cells[num]}</td>
-//     };
-//
-//     return (
-//         <div className={"container"}>
-//             <table>
-//                 Turn {turn}
-//                 <tbody>
-//                 <tr>
-//                     <Cell num={0} />
-//                     <Cell num={1} />
-//                     <Cell num={2} />
-//                 </tr>
-//                 <tr>
-//                     <Cell num={3} />
-//                     <Cell num={4} />
-//                     <Cell num={5} />
-//                 </tr>
-//                 <tr>
-//                     <Cell num={6} />
-//                     <Cell num={7} />
-//                     <Cell num={8} />
-//                 </tr>
-//                 </tbody>
-//             </table>
-//             {winner && (
-//                 <>
-//                     <p>{winner} is the winner!</p>
-//                     <button>Play Again</button>
-//                 </>
-//             )}
-//         </div>
-//     )
-// }
-//
-// export default TicTacToe;
-
-// const ticTacToe = () => {
-//     const gameArray = [
-//         ['', '', ''],
-//         ['', '', ''],
-//         ['', '', '']
-//     ];
-//     const winningCombinations = [
-//         [0, 1, 2],
-//         [3, 4, 5],
-//         [6, 7, 8],
-//         [0, 3, 6],
-//         [1, 4, 7],
-//         [2, 5, 8],
-//         [0, 4, 8],
-//         [2, 4, 6],
-//     ];
-// }
-
 let turn = `x`;
 let gameDone = false;
-let gameArray = [
-    ['', '', ''],
-    ['', '', ''],
-    ['', '', '']
-];
 
-console.log(gameArray[0][0]);
+let gameArray;
+
+const setGameArray = () => {
+    gameArray = [
+        ['', '', ''],
+        ['', '', ''],
+        ['', '', '']
+    ];
+}
 
 const setBoard = () => {
+    setGameArray();
+    gameDone = false;
+    turn = 'x';
+
+    document.querySelector("#btn-previous").style.opacity = "0";
+    document.querySelector("#btn-previous").disabled = true;
+    document.querySelector("#btn-next").style.opacity = "0";
+    document.querySelector("#btn-next").disabled = true;
+
     let gameBoard = document.querySelector("#game-board")
+
     while (gameBoard.firstElementChild) {
         console.log(`Removed`)
         gameBoard.removeChild(gameBoard.firstElementChild);
@@ -148,7 +44,39 @@ const setBoard = () => {
     }
 }
 
-function setSymbol () {
+const checkForWin = (turn) => {
+    let colorizeStart;
+    let colorizeEnd;
+    for (let i = 0; i < 3; i++) {
+        if (gameArray[i][0] !== '' && gameArray[i][0] === gameArray[i][1] && gameArray[i][1] === gameArray[i][2]) {
+            gameDone = true;
+            colorizeStart = i;
+            colorizeEnd = 2;
+            console.log(colorizeStart, colorizeEnd);
+            colorizeHorizontal(colorizeStart);
+        } else if (gameArray[0][i] !== '' && gameArray[0][i] === gameArray[1][i] && gameArray[1][i] === gameArray[2][i]) {
+            gameDone = true;
+            colorizeStart = 0;
+            colorizeEnd = i;
+            console.log(colorizeStart, colorizeEnd);
+        }
+    }
+    if (gameArray[0][0] !== '' && gameArray[0][0] === gameArray[1][1] && gameArray[1][1] === gameArray[2][2]) {
+        gameDone = true;
+    } else if (gameArray[0][2] !== '' && gameArray[0][2] === gameArray[1][1] && gameArray[1][1] === gameArray[2][0]) {
+        gameDone = true;
+    }
+
+    if (gameDone) {
+        document.querySelector("#btn-previous").style.opacity = "1";
+        document.querySelector("#btn-previous").disabled = false;
+        document.querySelector("#btn-next").style.opacity = "1";
+        document.querySelector("#btn-next").disabled = false;
+        alert(`${turn} has won!`)
+    }
+}
+
+function setSymbol() {
     let x = parseInt(this.dataset.x);
     let y = parseInt(this.dataset.y);
     if (gameArray[x][y] !== ``) {
@@ -156,16 +84,31 @@ function setSymbol () {
         return;
     }
     if (turn === `x`) {
-        turn = `o`;
-        gameArray[x][y] = `x`;
         this.innerHTML = `X`;
+        gameArray[x][y] = `x`;
+        checkForWin(turn);
+        turn = `o`;
     } else {
-        turn = `x`;
-        gameArray[x][y] = `o`;
         this.innerHTML = `O`;
+        gameArray[x][y] = `o`;
+        checkForWin(turn);
+        turn = `x`;
     }
-    // checkForWin();
+
+    console.log(gameDone);
     console.log(gameArray);
+}
+
+const colorizeHorizontal = (start) => {
+    for (let i = (start * 3); i < (start * 3) + 3; i++) {
+        document.querySelector(`#btn-${i}`).style.color = `#b0ff65`;
+    }
+}
+
+const colorizeVertical = (start) => {
+    for (let i = (start * 3); i < (start * 3) + 3; i++) {
+        document.querySelector(`#btn-${i}`).style.color = `#b0ff65`;
+    }
 }
 
 document.querySelector("#btn-restart").addEventListener("click", setBoard);
