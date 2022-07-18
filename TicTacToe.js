@@ -148,8 +148,11 @@ const colorize = (start, direction) => {
 }
 
 const goBackHistory = () => {
-    if (turnCount === 0)
+    if (turnCount === 0){
+        document.querySelector("#btn-previous").disabled = true;
         return;
+    }
+    document.querySelector("#btn-next").disabled = false;
     console.log(history[turnCount - 1])
     let x = history[turnCount - 1].x;
     let y = history[turnCount - 1].y;
@@ -160,8 +163,11 @@ const goBackHistory = () => {
 }
 
 const goForwardHistory = () => {
-    if (turnCount > history.length - 1)
+    if (turnCount > history.length - 1){
+        document.querySelector("#btn-next").disabled = true;
         return;
+    }
+    document.querySelector("#btn-previous").disabled = false;
     console.log(history[turnCount - 1])
     let x = history[turnCount].x;
     let y = history[turnCount].y;

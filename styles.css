@@ -7,18 +7,20 @@ body, button {
 
 h1 {
   text-shadow: 0 0 3px rgb(39, 39, 39);
+  font-size: 2vw;
 }
 
 button {
   padding: 1vh;
-  height: 60px;
-  width: 200px;
+  height: 3vw;
+  width: 12vw;
   text-align: center;
   background-color: #32324f;
   color: white;
   border: none;
-  border-bottom: 5px outset #65ffd6;
-  border-radius: 15px;
+  border-bottom: 0.25vw outset #65ffd6;
+  border-radius: 1vw;
+  font-size: 0.75vw;
   transition: 150ms cubic-bezier(1, 0.75, 0.75, 1);
 }
 button:hover {
@@ -53,12 +55,12 @@ button:hover {
 .grid-columns {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
+  gap: 0.5vw;
 }
 .grid-columns button {
-  height: 150px;
-  width: 150px;
-  font-size: 30px;
+  height: 7.5vw;
+  width: 7.5vw;
+  font-size: 2vw;
   z-index: 0;
 }
 .grid-columns button:hover {
@@ -73,7 +75,7 @@ button:hover {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   padding: 20px 0;
-  gap: 15px;
+  gap: 1vw;
 }
 
 /*# sourceMappingURL=styles.css.map */
